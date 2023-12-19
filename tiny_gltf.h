@@ -1283,6 +1283,10 @@ struct URICallbacks {
   void *user_data;  // An argument that is passed to all uri callbacks
 };
 
+struct Options {
+    bool skip_imagery = false;
+};
+
 ///
 /// LoadImageDataFunction type. Signature for custom image loading callbacks.
 ///
@@ -1448,7 +1452,8 @@ class TinyGLTF {
                             const unsigned char *bytes,
                             const unsigned int length,
                             const std::string &base_dir = "",
-                            unsigned int check_sections = REQUIRE_VERSION);
+                            unsigned int check_sections = REQUIRE_VERSION,
+                            Options* options = nullptr);
 
   ///
   /// Write glTF to stream, buffers and images will be embedded
@@ -6561,7 +6566,9 @@ bool TinyGLTF::LoadBinaryFromMemory(Model *model, std::string *err,
                                     const unsigned char *bytes,
                                     unsigned int size,
                                     const std::string &base_dir,
-                                    unsigned int check_sections) {
+                                    unsigned int check_sections,
+                                    Options* options);
+{
   if (size < 20) {
     if (err) {
       (*err) = "Too short data size for glTF Binary.";
